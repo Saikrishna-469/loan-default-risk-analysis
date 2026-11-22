@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Loan Default Risk Analysis — Dashboard</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Arial, sans-serif; margin: 0;
+         background: #f4f6f8; color: #1f2937; }
+  header { background: #1f3a5f; color: #fff; padding: 28px 40px; }
+  header h1 { margin: 0 0 6px; font-size: 26px; }
+  header p { margin: 0; opacity: .85; max-width: 900px; }
+  main { max-width: 1060px; margin: 0 auto; padding: 24px 20px 48px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .kpi .label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #6b7280; }
+  .kpi .value { font-size: 30px; font-weight: 700; color: #1f3a5f; margin-top: 4px; }
+  .kpi .sub { font-size: 13px; color: #6b7280; margin-top: 2px; }
+  .card { background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
+          box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .card h2 { margin-top: 0; color: #1f3a5f; font-size: 19px; }
+  .card img { max-width: 100%; border: 1px solid #e5e7eb; border-radius: 6px; }
+  .card p.note { font-size: 13px; color: #6b7280; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #e5e7eb; }
+  th { color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  td.num, th.num { text-align: right; }
+  ul { line-height: 1.6; }
+  footer { font-size: 13px; color: #6b7280; }
+  a { color: #1f3a5f; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Loan Default Risk Analysis</h1>
+  <p>Which LendingClub loan applications should a lender approve — and at what grade, rate, amount and term? 2.26 million funded loans, 2007–2018. Default rates below are measured on the 1,345,350 loans whose outcome is known (Fully Paid vs Charged Off / Default); loans still Current, Late or In Grace Period are excluded.</p>
+</header>
+<main>
+  <div class="kpis">
+    <div class="kpi"><div class="label">Resolved loans</div><div class="value">1,345,350</div><div class="sub">of 2,260,668 funded</div></div>
+    <div class="kpi"><div class="label">Default rate</div><div class="value">19.96%</div><div class="sub">268,599 charged off / defaulted</div></div>
+    <div class="kpi"><div class="label">Funded to defaulted loans</div><div class="value">$4.18B</div><div class="sub">of $19.40B funded to resolved loans</div></div>
+    <div class="kpi"><div class="label">Net principal lost</div><div class="value">$3.00B</div><div class="sub">funded $ minus principal recovered</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Grade is the whole story — and the pricing matches it</h2>
+    <img src="../images/default_rate_by_grade.png" alt="Default rate by grade">
+    <p>Default rates rise monotonically from 6.0% (grade A) to 49.9% (grade G) — an 8x spread — and the interest-rate ladder tracks it (7.1% → 27.7%). The grade system works; the question is where to draw the line, not whether the ranking is right.</p>
+  </div>
+
+  <div class="card">
+    <h2>Term matters as much as grade</h2>
+    <img src="../images/default_rate_by_term_grade.png" alt="Default rate by grade and term">
+    <p>60-month loans default at 32.5% vs 16.0% for 36-month loans — and the gap holds inside every grade (e.g. grade C: 27.5% vs 20.5%; grade E: 42.1% vs 32.7%). In the logistic model, term is the single strongest application-time risk driver (odds ratio 1.45 per SD).</p>
+  </div>
+
+  <div class="card">
+    <h2>FICO × DTI: the two levers a lender controls at application time</h2>
+    <img src="../images/fico_x_dti_heatmap.png" alt="Default rate by FICO and DTI">
+    <p>Borrowers with FICO 650–699 and DTI above 30 default at 33.1%; borrowers with FICO 800+ and DTI 10–15 default at 5.3%. The two together separate risk far better than either alone. Note: only 2 resolved loans had FICO below 650 — approved loans start at ~660, so the subprime population is invisible in this data.</p>
+  </div>
+
+  <div class="card">
+    <h2>Where the money is: purpose and concentration</h2>
+    <img src="../images/default_rate_by_purpose.png" alt="Default rate by purpose">
+    <p>Small-business loans default most (29.7%). Debt consolidation is 58% of all loans and 61% of all defaults — the book <em>is</em> debt consolidation, so criteria changes there move the total. Grades D–G are only 25% of loans but 43% of defaults.</p>
+  </div>
+
+  <div class="card">
+    <h2>Default rate by issue year — read with the censoring caveat</h2>
+    <img src="../images/default_rate_by_year.png" alt="Default rate by issue year">
+    <p class="note">Rates rose from 12.6% (2009) to 23.3% (2016). The 2017–2018 dip is partly censoring: most of those loans are still Current and excluded from the denominator, so only their early defaults are counted.</p>
+  </div>
+
+  <div class="card">
+    <h2>Net principal lost by grade</h2>
+    <img src="../images/net_loss_by_grade.png" alt="Net principal lost by grade">
+    <p>Grade C alone accounts for $883M of the $3.0B net principal lost — more than grades E, F and G combined — because C is a large book (28% of loans) with a 22.4% default rate. Loss rate on funded dollars runs from 3.5% (A) to 42.7% (G).</p>
+  </div>
+
+  <div class="card">
+    <h2>Recommendations</h2>
+    <ul>
+      <li><strong>Cap 60-month terms for grades D–G</strong> (or price them +3–4 pts): 60-month D–G loans default at 36–50%.</li>
+      <li><strong>Decline or re-price FICO &lt;670 with DTI ≥20</strong>: 92,392 loans, 32.0% default rate vs 19.1% for everyone else.</li>
+      <li><strong>Tighten small-business purpose</strong>: 29.7% default on 15,416 loans; require stronger FICO/DTI or a lower cap.</li>
+      <li><strong>Focus on grade C, not just F–G</strong>: C drives the largest dollar loss ($883M net) despite a mid-range rate.</li>
+      <li><strong>Fix the unknown-employment-length bucket</strong>: 78,516 loans with no employment length default at 26.9% — collect it or treat as high-risk.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Default rate by grade (detail)</h2>
+    <table>
+      <tr><th>Grade</th><th class="num">Loans</th><th class="num">Default rate</th><th class="num">Avg rate</th><th class="num">Share of defaults</th></tr>
+      <tr><td>A</td><td class="num">235,095</td><td class="num">6.04%</td><td class="num">7.11%</td><td class="num">5.29%</td></tr>
+      <tr><td>B</td><td class="num">392,748</td><td class="num">13.39%</td><td class="num">10.68%</td><td class="num">19.57%</td></tr>
+      <tr><td>C</td><td class="num">381,694</td><td class="num">22.44%</td><td class="num">14.02%</td><td class="num">31.89%</td></tr>
+      <tr><td>D</td><td class="num">200,966</td><td class="num">30.39%</td><td class="num">17.72%</td><td class="num">22.74%</td></tr>
+      <tr><td>E</td><td class="num">93,656</td><td class="num">38.48%</td><td class="num">21.14%</td><td class="num">13.42%</td></tr>
+      <tr><td>F</td><td class="num">32,059</td><td class="num">45.20%</td><td class="num">24.93%</td><td class="num">5.40%</td></tr>
+      <tr><td>G</td><td class="num">9,132</td><td class="num">49.93%</td><td class="num">27.73%</td><td class="num">1.70%</td></tr>
+    </table>
+    <p class="note">Full query outputs: <a href="02_metrics_q1.csv">headline KPIs</a> · <a href="03_grade_q1.csv">grade</a> · <a href="04_purpose_q1.csv">purpose</a> · <a href="05_borrower_q4.csv">FICO × DTI</a> · <a href="07_concentration_q4.csv">loss by grade</a>. All figures reproducible from <code>sql/</code> — see the README.</p>
+  </div>
+
+  <footer>
+    Source: LendingClub accepted loans 2007–2018Q4 (Kaggle). Analysis in DuckDB + SQL; charts in Python; stretch model: logistic regression, ROC-AUC 0.690 on application-time features only. See <a href="../README.md">README</a> and <a href="../notes/cleaning_notes.md">cleaning notes</a> for methods and limitations.
+  </footer>
+</main>
+</body>
+</html>

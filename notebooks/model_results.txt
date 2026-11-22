@@ -1,0 +1,18 @@
+ROC-AUC: 0.690
+
+Top odds ratios (per 1 SD for numeric features):
+term_months                            1.453
+dti                                    1.221
+log_loan_amnt                          1.211
+verification_status_Verified           1.115
+verification_status_Source Verified    1.107
+purpose_small_business                 1.093
+home_ownership_RENT                    1.092
+purpose_other                          1.085
+
+Lowest odds ratios:
+emp_length_years           0.983
+purpose_credit_card        0.934
+home_ownership_MORTGAGE    0.906
+log_income                 0.829
+fico                       0.678

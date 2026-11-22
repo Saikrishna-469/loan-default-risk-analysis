@@ -1,0 +1,7 @@
+# Raw data + built database (rebuilt by load.py)
+data/raw/
+*.duckdb
+*.zip
+*.gz
+__pycache__/
+.venv/

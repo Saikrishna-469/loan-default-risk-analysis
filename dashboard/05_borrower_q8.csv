@@ -1,0 +1,3 @@
+segment,n_loans,n_defaults,default_rate_pct
+all other resolved loans,1252958,239053,19.08
+FICO <670 AND DTI >=20,92392,29546,31.98

@@ -1,0 +1,3 @@
+segment,n_loans,n_defaults,share_of_all_defaults_pct,default_rate_pct,funded_to_defaulted_usd
+grades A-C,1009537,152439,56.75,15.1,2171457825.0
+grades D-G,335813,116160,43.25,34.59,2009251925.0

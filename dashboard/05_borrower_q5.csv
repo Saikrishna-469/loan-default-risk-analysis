@@ -1,0 +1,7 @@
+emp_band,n_loans,default_rate_pct
+0 years,108065,20.53
+1-2 years,210246,20.13
+3-5 years,272314,19.79
+6-9 years,234000,19.66
+10+ years,442209,18.78
+unknown,78516,26.92

@@ -1,0 +1,3 @@
+segment,n_loans,n_defaults,share_of_all_defaults_pct,default_rate_pct
+FICO >=670,1107658,206136,76.74,18.61
+FICO <670 (subprime),237692,62463,23.26,26.28
